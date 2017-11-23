@@ -1,0 +1,3 @@
+SQL> spool
+currently spooling to hola.txt
+SQL> spool off
