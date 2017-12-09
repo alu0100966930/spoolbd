@@ -1,0 +1,425 @@
+SQL> spool
+currently spooling to p52.lst
+SQL> SELECT P
+  2  FROM PROFESOR
+  3  WHERE CAR IN(SELECT CAR
+  4  FROM ASIGNATURA
+  5  WHERE (T='GII') AND (A='OPTIMIZACION'))
+  6  ORDER BY P ASC;
+
+P                                                                               
+------------------------------------------------------------                    
+JOSE MANUEL                                                                     
+JUAN                                                                            
+
+SQL> SELECT P
+  2  FROM PROFESOR
+  3  WHERE CAR IN(SELECT AR
+  4  FROM ;
+FROM 
+    *
+ERROR at line 4:
+ORA-00903: invalid table name 
+
+
+SQL> SELECT P
+  2  FROM PROFESOR
+  3  WHERE CAR IN(SELECT CAR
+  4  FROM AREA
+  5  WHERE CD IN(SELECT CD
+  6  FROM DEPARTAMENTO
+  7  WHERE D='MATEMATICA FUNDAMENTAL')
+  8  ORDER BY P DESC;
+ORDER BY P DESC
+*
+ERROR at line 8:
+ORA-00907: missing right parenthesis 
+
+
+SQL> SELECT P
+  2  FROM PROFESOR
+  3  WHERE CAR IN(SELECT CAR
+  4  FROM AREA
+  5  WHERE CD IN(SELECT CD
+  6  FROM DEPARTAMENTO
+  7  WHERE D='MATEMATICA FUNDAMENTAL'))
+  8  ORDER BY P DESC;
+
+P                                                                               
+------------------------------------------------------------                    
+IVAN                                                                            
+
+SQL> SELECT A
+  2  FROM ASIGNATURA
+  3  WHERE CAR IN (SELECT CAR
+  4  FROM PROFESOR
+  5  WHERE DNI=1010);
+
+A                                                                               
+--------------------------------------------------                              
+INTELIGENCIA ARTIFICIAL                                                         
+GESTION DE RIESGOS                                                              
+
+SQL> SELECT A
+  2  FROM ASIGNATURA
+  3  WHERE CAR IN (SELECT CAR
+  4  FROM PROFESOR
+  5  WHERE P='DAVID');
+
+A                                                                               
+--------------------------------------------------                              
+INTELIGENCIA ARTIFICIAL                                                         
+GESTION DE RIESGOS                                                              
+
+SQL> SELECT AR
+  2  FROM AREA
+  3  WHERE CD IN(SELECT CD
+  4  FROM DEPARTAMENTO
+  5  WHERE D='ESTADISTICA,INVESTIGACION OPERATIVA Y COMPUTACION');
+
+no rows selected
+
+SQL> SELECT *
+  2  FROM DEPARTAMENTO;
+
+        CD D                                                                    
+---------- ------------------------------------------------------------         
+         1 ANALISIS MATEMATICO                                                  
+         2 ASTROFISICA                                                          
+         3 ESTADISTICA, INVESTIGACION OPERATIVA Y COMPUTACION                   
+         4 MATEMATICA FUNDAMENTAL                                               
+
+SQL> SELECT AR
+  2  FROM AREA
+  3  WHERE CD IN(SELECT CD
+  4  FROM DEPARTAMENTO
+  5  WHERE D='ESTADISTICA, INVESTIGACION OPERATIVA Y COMPUTACION');
+
+AR                                                                              
+------------------------------------------------------------                    
+CIENCIAS DE LA COMPUTACION E INTELIGENCIA ARTIFICIAL                            
+ESTADISTICA E INVESTIGACION OPERATIVA                                           
+LENGUAJES Y SISTEMAS INFORMATICOS                                               
+
+SQL> SELECT A
+  2  FROM ASIGNATURA
+  3  WHERE CAS IN (SELECT CAS
+  4  FROM PLAN_DOCENTE
+  5  WHERE DNI IN(SELECT DNI
+  6  FROM PROFESOR
+  7  WHERE CAT='CU'));
+
+A                                                                               
+--------------------------------------------------                              
+ALMACENES DE DATOS                                                              
+OPTIMIZACION                                                                    
+
+SQL> SELECT A
+  2  FROM ASIGNATURA
+  3  WHERE CAS IN (SELECT CAS
+  4  FROM PLAN_DOCENTE
+  5  WHERE (FF IS NULL) AND DNI IN (SELECT DNI
+  6  FROM PROFESOR
+  7  WHERE CAT='CU'));
+
+A                                                                               
+--------------------------------------------------                              
+ALMACENES DE DATOS                                                              
+OPTIMIZACION                                                                    
+
+SQL> SELECT A
+  2  FROM ASIGNATURA
+  3  WHERE CAS IN (SELECT CAS
+  4  FROM PLAN_DOCENTE
+  5  WHERE DNI IN (SELECT DNI
+  6  FROM PROFESOR
+  7  WHERE CAT='CU'));
+
+A                                                                               
+--------------------------------------------------                              
+ALMACENES DE DATOS                                                              
+OPTIMIZACION                                                                    
+
+SQL> SELECT A
+  2  FROM ASIGNATURA
+  3  WHERE CAR IN(SELECT CAR
+  4  FROM AREA
+  5  WHERE(AR='LENGUAJES Y SISTEMAS INFORMATICOS')OR(AR='CIENCIAS DE LA COMPUTACION E INTELIGENCIA ARTIFICIAL'));
+
+A                                                                               
+--------------------------------------------------                              
+GESTION DE RIESGOS                                                              
+INTELIGENCIA ARTIFICIAL                                                         
+INFORMATICA BASICA                                                              
+MINERIA DE DATOS                                                                
+ALMACENES DE DATOS                                                              
+BASES DE DATOS                                                                  
+
+6 rows selected.
+
+SQL> SELECT P
+  2  FROM PROFESOR
+  3  WHERE DNI IN(SELECT DNI
+  4  FROM PLAN_DOCENTE
+  5  WHERE (FF IS NULL) AND CAS IN(SELECT CAS
+  6  FROM ASIGNATURA
+  7  WHERE (T='GII')OR(T='MII')));
+
+P                                                                               
+------------------------------------------------------------                    
+MARIA                                                                           
+PEDRO                                                                           
+SOLEDAD                                                                         
+CARLOS                                                                          
+IVAN                                                                            
+ANGELA                                                                          
+JOSE MANUEL                                                                     
+JUAN                                                                            
+DAVID                                                                           
+
+9 rows selected.
+
+SQL> SELECT P
+  2  FROM PROFESOR
+  3  WHERE (DNI IN(SELECT DNI
+  4  FROM PLAN_DOCENTE
+  5  WHERE (FF IS NOT NULL) AND (CAS IN(SELECT CAS
+  6  FROM ASIGNATURA
+  7  WHERE T='GII')))) AND (DNI IN(SELECT DNI
+  8  FROM PLAN_DOCENTE
+  9  WHERE (FF IS NOT NULL) AND (CAS IN(SELECT CAS
+ 10  FROM ASIGNATURA
+ 11  WHERE T='MII'))));
+
+no rows selected
+
+SQL> SELECT P
+  2  FROM PROFESOR
+  3  WHERE DNI IN(SELECT DNI
+  4  FROM PLAN_DOCENTE
+  5  WHERE (FF IS NOT NULL) MINUS (SELECT DNI
+  6  FROM PLAN_DOCENTE
+  7  WHERE (FF IS NULL)));
+
+P                                                                               
+------------------------------------------------------------                    
+CARMEN                                                                          
+
+SQL> SELECT A
+  2  FROM ASIGNATURA
+  3  WHERE T='GII';
+
+A                                                                               
+--------------------------------------------------                              
+BASES DE DATOS                                                                  
+INTELIGENCIA ARTIFICIAL                                                         
+INFORMATICA BASICA                                                              
+ALGEBRA                                                                         
+CALCULO                                                                         
+OPTIMIZACION                                                                    
+GESTION DE RIESGOS                                                              
+
+7 rows selected.
+
+SQL> SELECT AR,A
+  2  FROM AREA A1, ASIGNATURA A2
+  3  WHERE A1.CAR=A2.CAR;
+
+AR                                                                              
+------------------------------------------------------------                    
+A                                                                               
+--------------------------------------------------                              
+ALGEBRA                                                                         
+ALGEBRA                                                                         
+                                                                                
+ANALISIS MATEMATICO                                                             
+ANALISIS COMPLEJO                                                               
+                                                                                
+ASTRONOMIA Y ASTROFISICA                                                        
+ASTRONOMIA                                                                      
+                                                                                
+
+AR                                                                              
+------------------------------------------------------------                    
+A                                                                               
+--------------------------------------------------                              
+CIENCIAS DE LA COMPUTACION E INTELIGENCIA ARTIFICIAL                            
+GESTION DE RIESGOS                                                              
+                                                                                
+CIENCIAS DE LA COMPUTACION E INTELIGENCIA ARTIFICIAL                            
+INTELIGENCIA ARTIFICIAL                                                         
+                                                                                
+DIDACTICA DE LA MATEMATICA                                                      
+ENSENANZA DE LA MATEMATICA                                                      
+                                                                                
+
+AR                                                                              
+------------------------------------------------------------                    
+A                                                                               
+--------------------------------------------------                              
+ESTADISTICA E INVESTIGACION OPERATIVA                                           
+OPTIMIZACION                                                                    
+                                                                                
+LENGUAJES Y SISTEMAS INFORMATICOS                                               
+INFORMATICA BASICA                                                              
+                                                                                
+LENGUAJES Y SISTEMAS INFORMATICOS                                               
+MINERIA DE DATOS                                                                
+                                                                                
+
+AR                                                                              
+------------------------------------------------------------                    
+A                                                                               
+--------------------------------------------------                              
+LENGUAJES Y SISTEMAS INFORMATICOS                                               
+ALMACENES DE DATOS                                                              
+                                                                                
+LENGUAJES Y SISTEMAS INFORMATICOS                                               
+BASES DE DATOS                                                                  
+                                                                                
+MATEMATICA APLICADA                                                             
+CALCULO                                                                         
+                                                                                
+
+12 rows selected.
+
+SQL> SELECT AR,A
+  2  FROM AREA A1,ASIGNATURA A2
+  3  WHERE A1.CAR=A2.CAR
+  4  ORDER BY AR,A;
+
+AR                                                                              
+------------------------------------------------------------                    
+A                                                                               
+--------------------------------------------------                              
+ALGEBRA                                                                         
+ALGEBRA                                                                         
+                                                                                
+ANALISIS MATEMATICO                                                             
+ANALISIS COMPLEJO                                                               
+                                                                                
+ASTRONOMIA Y ASTROFISICA                                                        
+ASTRONOMIA                                                                      
+                                                                                
+
+AR                                                                              
+------------------------------------------------------------                    
+A                                                                               
+--------------------------------------------------                              
+CIENCIAS DE LA COMPUTACION E INTELIGENCIA ARTIFICIAL                            
+GESTION DE RIESGOS                                                              
+                                                                                
+CIENCIAS DE LA COMPUTACION E INTELIGENCIA ARTIFICIAL                            
+INTELIGENCIA ARTIFICIAL                                                         
+                                                                                
+DIDACTICA DE LA MATEMATICA                                                      
+ENSENANZA DE LA MATEMATICA                                                      
+                                                                                
+
+AR                                                                              
+------------------------------------------------------------                    
+A                                                                               
+--------------------------------------------------                              
+ESTADISTICA E INVESTIGACION OPERATIVA                                           
+OPTIMIZACION                                                                    
+                                                                                
+LENGUAJES Y SISTEMAS INFORMATICOS                                               
+ALMACENES DE DATOS                                                              
+                                                                                
+LENGUAJES Y SISTEMAS INFORMATICOS                                               
+BASES DE DATOS                                                                  
+                                                                                
+
+AR                                                                              
+------------------------------------------------------------                    
+A                                                                               
+--------------------------------------------------                              
+LENGUAJES Y SISTEMAS INFORMATICOS                                               
+INFORMATICA BASICA                                                              
+                                                                                
+LENGUAJES Y SISTEMAS INFORMATICOS                                               
+MINERIA DE DATOS                                                                
+                                                                                
+MATEMATICA APLICADA                                                             
+CALCULO                                                                         
+                                                                                
+
+12 rows selected.
+
+SQL> SELECT D,P
+  2  FROM DEPARTAMENTO D1, PROFESOR P1
+  3  WHERE D1.CD=(SELECT CD
+  4  FROM AREA
+  5  WHERE CAR=P1.CAR)
+  6  ORDER BY D,P;
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ANALISIS MATEMATICO                                                             
+ANGELA                                                                          
+                                                                                
+ANALISIS MATEMATICO                                                             
+CARINA                                                                          
+                                                                                
+ANALISIS MATEMATICO                                                             
+FRANCISCO                                                                       
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ANALISIS MATEMATICO                                                             
+MARIO                                                                           
+                                                                                
+ASTROFISICA                                                                     
+CARMEN                                                                          
+                                                                                
+ESTADISTICA, INVESTIGACION OPERATIVA Y COMPUTACION                              
+CARLOS                                                                          
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ESTADISTICA, INVESTIGACION OPERATIVA Y COMPUTACION                              
+CARMELO                                                                         
+                                                                                
+ESTADISTICA, INVESTIGACION OPERATIVA Y COMPUTACION                              
+DAVID                                                                           
+                                                                                
+ESTADISTICA, INVESTIGACION OPERATIVA Y COMPUTACION                              
+JOSE MANUEL                                                                     
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ESTADISTICA, INVESTIGACION OPERATIVA Y COMPUTACION                              
+JUAN                                                                            
+                                                                                
+ESTADISTICA, INVESTIGACION OPERATIVA Y COMPUTACION                              
+MARIA                                                                           
+                                                                                
+ESTADISTICA, INVESTIGACION OPERATIVA Y COMPUTACION                              
+PEDRO                                                                           
+                                                                                
+
+D                                                                               
+------------------------------------------------------------                    
+P                                                                               
+------------------------------------------------------------                    
+ESTADISTICA, INVESTIGACION OPERATIVA Y COMPUTACION                              
+SOLEDAD                                                                         
+                                                                                
+MATEMATICA FUNDAMENTAL                                                          
+IVAN                                                                            
+                                                                                
+
+14 rows selected.
+
+SQL> SPOOL OFF
