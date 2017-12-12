@@ -1,0 +1,365 @@
+SQL> spool
+currently spooling to p6.lst
+SQL> SELECT SYSDATE FROM DUAL;
+
+SYSDATE                                                                         
+---------                                                                       
+12-DEC-17                                                                       
+
+SQL> SELECT SYSTIME FROM DUAL;
+SELECT SYSTIME FROM DUAL
+       *
+ERROR at line 1:
+ORA-00904: "SYSTIME": invalid identifier 
+
+
+SQL> SELECT CURRENT_TIMESTAMP FROM DUAL;
+
+CURRENT_TIMESTAMP                                                               
+---------------------------------------------------------------------------     
+12-DEC-17 07.17.30.711945 PM +00:00                                             
+
+SQL> SELECT SYSDATE FROM DUAL;
+
+SYSDATE                                                                         
+---------                                                                       
+12-DEC-17                                                                       
+
+SQL> SELECT SYSDATETIME FROM DUAL;
+SELECT SYSDATETIME FROM DUAL
+       *
+ERROR at line 1:
+ORA-00904: "SYSDATETIME": invalid identifier 
+
+
+SQL> select to_char(sysdate,'hh24:mi:ss') from dual;
+
+TO_CHAR(                                                                        
+--------                                                                        
+19:23:30                                                                        
+
+SQL> SELECT TO_NUMBER(SYSDATE-(SELECT FI
+  2  FROM PLAN_DOCENTE
+  3  WHERE DNI IN (SELECT DNI
+  4  FROM PROFESOR
+  5  WHERE CAR IN (SELECT CAR
+  6  FROM ASIGNATURA
+  7  WHERE CAS=8))));
+WHERE CAS=8))))
+              *
+ERROR at line 7:
+ORA-00923: FROM keyword not found where expected 
+
+
+SQL> SELECT TO_NUMBER(SYSDATE-(SELECT FI
+  2  FROM PLAN_DOCENTE
+  3  WHERE DNI=8888 AND SELECT
+  4  ;
+SELECT TO_NUMBER(SYSDATE-(SELECT FI
+*
+ERROR at line 1:
+ORA-00921: unexpected end of SQL command 
+
+
+SQL> SELECT TO_NUMBRE(SYSDATE-(SELECT FI
+  2  FROM PLAN_DOCENTE
+  3  WHERE DNI=8888 AND DNI IN (SELECT DNI
+  4  FROM PROFESOR
+  5  WHERE CAR IN (SELECT CAR
+  6  FROM ASIGNATURA
+  7  WHERE CAS=11))))
+  8  FROM DUAL;
+SELECT TO_NUMBRE(SYSDATE-(SELECT FI
+       *
+ERROR at line 1:
+ORA-00904: "TO_NUMBRE": invalid identifier 
+
+
+SQL> SELECT TO_NUMBER(SYSDATE-SELECT FI
+  2  FROM ;
+SELECT TO_NUMBER(SYSDATE-SELECT FI
+                         *
+ERROR at line 1:
+ORA-00936: missing expression 
+
+
+SQL> SELECT TO_NUMBER(SYSDATE-(SELECT FI
+  2  FROM PLAN_DOCENTE
+  3  WHERE DNI=8888 AND DNI IN (SELECT DNI
+  4  FROM PROFESOR
+  5  WHERE CAR IN (SELECT CAR
+  6  FROM ASIGNATURA
+  7  WHERE CAS=11))))
+  8  FROM DUAL;
+
+TO_NUMBER(SYSDATE-(SELECTFIFROMPLAN_DOCENTEWHEREDNI=8888ANDDNIIN(SELECTDNIFROMPR
+--------------------------------------------------------------------------------
+                                                                      3024.81735
+
+SQL> SELECT P
+  2  FROM PROFESOR
+  3  WHERE DNI IN (SELECT DNI
+  4  FROM PLAN_DOCENTE
+  5  WHERE(FF IS NOT NULL) AND (FF-FI)>365 OR DNI IN
+  6  (SELECT DNI
+  7  FROM PLAN_DOCENTE
+  8  WHERE (FF IS NULL) AND TO_NUMBER IN (SELECT TO_NUMBER
+  9  FROM DUAL
+ 10  WHERE (SYSDATE-;
+WHERE (SYSDATE-
+              *
+ERROR at line 10:
+ORA-00936: missing expression 
+
+
+SQL> SELECT P
+  2  FROM PROFESOR
+  3  WHERE DNI IN (SELECT DNI
+  4  FROM PLAN_DOCENTE
+  5  WHERE (FF IS NOT NULL) AND (FF-FI)>365;
+WHERE (FF IS NOT NULL) AND (FF-FI)>365
+                                     *
+ERROR at line 5:
+ORA-00907: missing right parenthesis 
+
+
+SQL> SELECT P
+  2  FROM PROFESOR
+  3  WHERE DNI IN (SELECT DNI
+  4  FROM PLAN_DOCENTE
+  5  WHERE (FF IS NOT NULL) AND (FF-FI)>365);
+
+P                                                                               
+------------------------------------------------------------                    
+DAVID                                                                           
+JUAN                                                                            
+CARMEN                                                                          
+
+SQL> SELECT P
+  2  FROM PROFESOR
+  3  WHERE DNI IN (SELECT DNI
+  4  FROM PLAN_DOCENTE
+  5  WHERE (FF IS NOT NULL) AND (FF-FI)>365) OR DNI IN(SELECT DNI
+  6  FROM PLAN_DOCENTE
+  7  WHERE (FF IS NULL) AND ((SELECT SYSDATE FROM DUAL)-FI)>365);
+
+P                                                                               
+------------------------------------------------------------                    
+JUAN                                                                            
+CARLOS                                                                          
+PEDRO                                                                           
+MARIA                                                                           
+IVAN                                                                            
+CARMEN                                                                          
+MARIO                                                                           
+FRANCISCO                                                                       
+ANGELA                                                                          
+DAVID                                                                           
+SOLEDAD                                                                         
+
+P                                                                               
+------------------------------------------------------------                    
+JOSE MANUEL                                                                     
+
+12 rows selected.
+
+SQL> SELECT P
+  2  FROM PROFESOR
+  3  WHERE DNI IN (SELECT DNI
+  4  FROM PLAN_DOCENTE
+  5  WHERE (FF IS NOT NULL) AND (FF-FI)>365 OR DNI IN(SELECT DNI
+  6  FROM PLAN_DOCENTE
+  7  WHERE (FF IS NULL) AND ((SELECT SYSDATE FROM DUAL)-FI)>365));
+
+P                                                                               
+------------------------------------------------------------                    
+JUAN                                                                            
+CARLOS                                                                          
+PEDRO                                                                           
+MARIA                                                                           
+IVAN                                                                            
+CARMEN                                                                          
+MARIO                                                                           
+FRANCISCO                                                                       
+ANGELA                                                                          
+DAVID                                                                           
+SOLEDAD                                                                         
+
+P                                                                               
+------------------------------------------------------------                    
+JOSE MANUEL                                                                     
+
+12 rows selected.
+
+SQL> SELECT COUNT P
+  2  FROM PROFESOR
+  3  WHERE CAR IN (SELECT CAR
+  4  FROM AREA
+  5  WHERE CD IN (SELECT CD
+  6  FROM DEPARTAMENTO
+  7  WHERE D='ASTROFISICA'));
+SELECT COUNT P
+       *
+ERROR at line 1:
+ORA-00904: "COUNT": invalid identifier 
+
+
+SQL> SELECT COUNT (P)
+  2  FROM PROFESOR
+  3  WHERE CAR IN (SELECT CAR
+  4  FROM AREA
+  5  WHERE CD IN (SELECT CD
+  6  FROM DEPARTAMENTO
+  7  WHERE D='ASTROFISICA'));
+
+  COUNT(P)                                                                      
+----------                                                                      
+         1                                                                      
+
+SQL> SELECT COUNT(P)
+  2  FROM PROFESOR
+  3  WHERE ;
+WHERE 
+     *
+ERROR at line 3:
+ORA-00936: missing expression 
+
+
+SQL> SELECT D AND COUNT(P)
+  2  FROM DEPARTAMENTO D1, PROFESOR P1
+  3  WHERE D1.CD=(SELECT CD
+  4  FROM AREA
+  5  WHERE CAR=P1.CAR)
+  6  ORDER BY D,P;
+SELECT D AND COUNT(P)
+         *
+ERROR at line 1:
+ORA-00923: FROM keyword not found where expected 
+
+
+SQL> SELECT COUNT(D,P)
+  2  FROM DEPARTAMENTO D1, PROFESOR P1
+  3  WHERE D1.CD=(SELECT CD
+  4  FROM AREA
+  5  WHERE CAR=P1.CAR)
+  6  ORDER BY D,P;
+SELECT COUNT(D,P)
+       *
+ERROR at line 1:
+ORA-00909: invalid number of arguments 
+
+
+SQL> SELECT COUNT (P)
+  2  FROM PROFESOR P1
+  3  WHERE P1.CAR=(SELECT CD
+  4  ;
+WHERE P1.CAR=(SELECT CD
+              *
+ERROR at line 3:
+ORA-00921: unexpected end of SQL command 
+
+
+SQL> SELECT D,COUNT(P)
+  2  FROM DEPARTAMENTO D1, PROFESOR P1
+  3  WHERE D1.CD=(SELECT CD
+  4  FROM AREA
+  5  WHERE CAR=P1.CAR)
+  6  ORDER BY D;
+SELECT D,COUNT(P)
+       *
+ERROR at line 1:
+ORA-00937: not a single-group group function 
+
+
+SQL> SELECT D,COUNT(P)
+  2  FROM DEPARTAMENTO D1, PROFESOR P1
+  3  WHERE D1.CD=(SELECT CD
+  4  FROM AREA
+  5  WHERE CAR=P1.CAR)
+  6  GROUP BY D
+  7  ORDER BY D;
+
+D                                                              COUNT(P)         
+------------------------------------------------------------ ----------         
+ANALISIS MATEMATICO                                                   4         
+ASTROFISICA                                                           1         
+ESTADISTICA, INVESTIGACION OPERATIVA Y COMPUTACION                    8         
+MATEMATICA FUNDAMENTAL                                                1         
+
+SQL> SELECT COUNT(T)
+  2  FROM ASIGNATURA
+  3  WHERE CAR IN (SELECT CAR
+  4  FROM AREA
+  5  WHERE CD IN (SELECT CD
+  6  FROM DEPARTAMENTO
+  7  WHERE D='ESTADISTICA, INVESTIGACION OPERATIVA Y COMPUTACION'));
+
+  COUNT(T)                                                                      
+----------                                                                      
+         7                                                                      
+
+SQL> SELECT COUNT(P)
+  2  FROM PROFESOR
+  3  WHERE CAR IN (SELECT CAR
+  4  FROM AREA
+  5  WHERE AR='A%');
+
+  COUNT(P)                                                                      
+----------                                                                      
+         0                                                                      
+
+SQL> SELECT COUNT(P)
+  2  FROM PROFESOR
+  3  WHERE CAR IN (SELECT CAR
+  4  FROM AREA
+  5  WHERE AR LIKE 'A%');
+
+  COUNT(P)                                                                      
+----------                                                                      
+         3                                                                      
+
+SQL> SELECT T, COUNT(A)
+  2  FROM ASIGNATURA
+  3  WHERE ;
+WHERE 
+     *
+ERROR at line 3:
+ORA-00936: missing expression 
+
+
+SQL> SELECT, COUNT(A)
+  2  FROM ASIGNATURA A1, ASIGNATURA A2
+  3  WHERE(;
+SELECT, COUNT(A)
+      *
+ERROR at line 1:
+ORA-00936: missing expression 
+
+
+SQL> SELECT T,COUNT(A)
+  2  FROM ASIGNATURA A1, ASIGNATURA A2
+  3  WHERE A1.T=(SELECT T
+  4  FROM ASIGNATURA
+  5  WHERE A=A2.A)
+  6  GROUP BY T
+  7  ORDER BY T;
+GROUP BY T
+         *
+ERROR at line 6:
+ORA-00918: column ambiguously defined 
+
+
+SQL> SELECT T,COUNT(A)
+  2  FROM ASIGNATURA A1, ASIGNATURA A2
+  3  WHERE A1.T=(SELECT T
+  4  FROM ASIGNATURA
+  5  WHERE A=A2.A)
+  6  GROUP BY A1.T
+  7  ORDER BY T;
+SELECT T,COUNT(A)
+               *
+ERROR at line 1:
+ORA-00918: column ambiguously defined 
+
+
+SQL> exit
