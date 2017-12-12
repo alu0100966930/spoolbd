@@ -1,365 +1,226 @@
 SQL> spool
 currently spooling to p6.lst
-SQL> SELECT SYSDATE FROM DUAL;
-
-SYSDATE                                                                         
----------                                                                       
-12-DEC-17                                                                       
-
-SQL> SELECT SYSTIME FROM DUAL;
-SELECT SYSTIME FROM DUAL
-       *
-ERROR at line 1:
-ORA-00904: "SYSTIME": invalid identifier 
+SQL> SELECT A
+  2  FROM ASIGNATURA
+  3  WHERE CAS IN (SELECT CAS
+  4  FROM PLAN_DOCENTE
+  5  WHERE ;
+WHERE 
+     *
+ERROR at line 5:
+ORA-00936: missing expression 
 
 
-SQL> SELECT CURRENT_TIMESTAMP FROM DUAL;
-
-CURRENT_TIMESTAMP                                                               
----------------------------------------------------------------------------     
-12-DEC-17 07.17.30.711945 PM +00:00                                             
-
-SQL> SELECT SYSDATE FROM DUAL;
-
-SYSDATE                                                                         
----------                                                                       
-12-DEC-17                                                                       
-
-SQL> SELECT SYSDATETIME FROM DUAL;
-SELECT SYSDATETIME FROM DUAL
-       *
-ERROR at line 1:
-ORA-00904: "SYSDATETIME": invalid identifier 
+SQL> SELECT A
+  2  FROM ASIGNATURA
+  3  WHERE MAX(DISTINCT CT);
+WHERE MAX(DISTINCT CT)
+      *
+ERROR at line 3:
+ORA-00934: group function is not allowed here 
 
 
-SQL> select to_char(sysdate,'hh24:mi:ss') from dual;
+SQL> SELECT A
+  2  FROM ASIGNATURA
+  3  WHERE CT=MAX(DISTINCT CT);
+WHERE CT=MAX(DISTINCT CT)
+         *
+ERROR at line 3:
+ORA-00934: group function is not allowed here 
 
-TO_CHAR(                                                                        
---------                                                                        
-19:23:30                                                                        
 
-SQL> SELECT TO_NUMBER(SYSDATE-(SELECT FI
-  2  FROM PLAN_DOCENTE
-  3  WHERE DNI IN (SELECT DNI
-  4  FROM PROFESOR
-  5  WHERE CAR IN (SELECT CAR
-  6  FROM ASIGNATURA
-  7  WHERE CAS=8))));
-WHERE CAS=8))))
-              *
-ERROR at line 7:
+SQL> SELECT A
+  2  FROM ASIGNATURA
+  3  WHERE CT=(SELECT MAX(DISTINCT CT));
+WHERE CT=(SELECT MAX(DISTINCT CT))
+                                 *
+ERROR at line 3:
 ORA-00923: FROM keyword not found where expected 
 
 
-SQL> SELECT TO_NUMBER(SYSDATE-(SELECT FI
-  2  FROM PLAN_DOCENTE
-  3  WHERE DNI=8888 AND SELECT
-  4  ;
-SELECT TO_NUMBER(SYSDATE-(SELECT FI
-*
-ERROR at line 1:
+SQL> SELECT A
+  2  FROM ASIGNATURA
+  3  WHERE CT=(SELECT MAX (DISTINCT CT
+  4  FROM ASIGNATURA);
+WHERE CT=(SELECT MAX (DISTINCT CT
+          *
+ERROR at line 3:
 ORA-00921: unexpected end of SQL command 
 
 
-SQL> SELECT TO_NUMBRE(SYSDATE-(SELECT FI
-  2  FROM PLAN_DOCENTE
-  3  WHERE DNI=8888 AND DNI IN (SELECT DNI
-  4  FROM PROFESOR
-  5  WHERE CAR IN (SELECT CAR
-  6  FROM ASIGNATURA
-  7  WHERE CAS=11))))
-  8  FROM DUAL;
-SELECT TO_NUMBRE(SYSDATE-(SELECT FI
-       *
-ERROR at line 1:
-ORA-00904: "TO_NUMBRE": invalid identifier 
-
-
-SQL> SELECT TO_NUMBER(SYSDATE-SELECT FI
-  2  FROM ;
-SELECT TO_NUMBER(SYSDATE-SELECT FI
-                         *
-ERROR at line 1:
-ORA-00936: missing expression 
-
-
-SQL> SELECT TO_NUMBER(SYSDATE-(SELECT FI
-  2  FROM PLAN_DOCENTE
-  3  WHERE DNI=8888 AND DNI IN (SELECT DNI
-  4  FROM PROFESOR
-  5  WHERE CAR IN (SELECT CAR
-  6  FROM ASIGNATURA
-  7  WHERE CAS=11))))
-  8  FROM DUAL;
-
-TO_NUMBER(SYSDATE-(SELECTFIFROMPLAN_DOCENTEWHEREDNI=8888ANDDNIIN(SELECTDNIFROMPR
---------------------------------------------------------------------------------
-                                                                      3024.81735
-
-SQL> SELECT P
-  2  FROM PROFESOR
-  3  WHERE DNI IN (SELECT DNI
-  4  FROM PLAN_DOCENTE
-  5  WHERE(FF IS NOT NULL) AND (FF-FI)>365 OR DNI IN
-  6  (SELECT DNI
-  7  FROM PLAN_DOCENTE
-  8  WHERE (FF IS NULL) AND TO_NUMBER IN (SELECT TO_NUMBER
-  9  FROM DUAL
- 10  WHERE (SYSDATE-;
-WHERE (SYSDATE-
-              *
-ERROR at line 10:
-ORA-00936: missing expression 
-
-
-SQL> SELECT P
-  2  FROM PROFESOR
-  3  WHERE DNI IN (SELECT DNI
-  4  FROM PLAN_DOCENTE
-  5  WHERE (FF IS NOT NULL) AND (FF-FI)>365;
-WHERE (FF IS NOT NULL) AND (FF-FI)>365
-                                     *
-ERROR at line 5:
+SQL> SELECT A
+  2  FROM ASIGNATURA WHERE CT IN (SELECT MAX(DISTINCT CT
+  3  FROM ASIGNATURA);
+FROM ASIGNATURA)
+*
+ERROR at line 3:
 ORA-00907: missing right parenthesis 
 
 
-SQL> SELECT P
-  2  FROM PROFESOR
-  3  WHERE DNI IN (SELECT DNI
-  4  FROM PLAN_DOCENTE
-  5  WHERE (FF IS NOT NULL) AND (FF-FI)>365);
-
-P                                                                               
-------------------------------------------------------------                    
-DAVID                                                                           
-JUAN                                                                            
-CARMEN                                                                          
-
-SQL> SELECT P
-  2  FROM PROFESOR
-  3  WHERE DNI IN (SELECT DNI
-  4  FROM PLAN_DOCENTE
-  5  WHERE (FF IS NOT NULL) AND (FF-FI)>365) OR DNI IN(SELECT DNI
-  6  FROM PLAN_DOCENTE
-  7  WHERE (FF IS NULL) AND ((SELECT SYSDATE FROM DUAL)-FI)>365);
-
-P                                                                               
-------------------------------------------------------------                    
-JUAN                                                                            
-CARLOS                                                                          
-PEDRO                                                                           
-MARIA                                                                           
-IVAN                                                                            
-CARMEN                                                                          
-MARIO                                                                           
-FRANCISCO                                                                       
-ANGELA                                                                          
-DAVID                                                                           
-SOLEDAD                                                                         
-
-P                                                                               
-------------------------------------------------------------                    
-JOSE MANUEL                                                                     
-
-12 rows selected.
-
-SQL> SELECT P
-  2  FROM PROFESOR
-  3  WHERE DNI IN (SELECT DNI
-  4  FROM PLAN_DOCENTE
-  5  WHERE (FF IS NOT NULL) AND (FF-FI)>365 OR DNI IN(SELECT DNI
-  6  FROM PLAN_DOCENTE
-  7  WHERE (FF IS NULL) AND ((SELECT SYSDATE FROM DUAL)-FI)>365));
-
-P                                                                               
-------------------------------------------------------------                    
-JUAN                                                                            
-CARLOS                                                                          
-PEDRO                                                                           
-MARIA                                                                           
-IVAN                                                                            
-CARMEN                                                                          
-MARIO                                                                           
-FRANCISCO                                                                       
-ANGELA                                                                          
-DAVID                                                                           
-SOLEDAD                                                                         
-
-P                                                                               
-------------------------------------------------------------                    
-JOSE MANUEL                                                                     
-
-12 rows selected.
-
-SQL> SELECT COUNT P
-  2  FROM PROFESOR
-  3  WHERE CAR IN (SELECT CAR
-  4  FROM AREA
-  5  WHERE CD IN (SELECT CD
-  6  FROM DEPARTAMENTO
-  7  WHERE D='ASTROFISICA'));
-SELECT COUNT P
-       *
-ERROR at line 1:
-ORA-00904: "COUNT": invalid identifier 
-
-
-SQL> SELECT COUNT (P)
-  2  FROM PROFESOR
-  3  WHERE CAR IN (SELECT CAR
-  4  FROM AREA
-  5  WHERE CD IN (SELECT CD
-  6  FROM DEPARTAMENTO
-  7  WHERE D='ASTROFISICA'));
-
-  COUNT(P)                                                                      
-----------                                                                      
-         1                                                                      
-
-SQL> SELECT COUNT(P)
-  2  FROM PROFESOR
-  3  WHERE ;
-WHERE 
-     *
+SQL> SELECT A
+  2  FROM ASIGNATURA WHERE CT IN (SELECT MAX(DISTINCT CT
+  3  FROM ASIGNATURA));
+FROM ASIGNATURA))
+*
 ERROR at line 3:
-ORA-00936: missing expression 
+ORA-00907: missing right parenthesis 
 
 
-SQL> SELECT D AND COUNT(P)
-  2  FROM DEPARTAMENTO D1, PROFESOR P1
-  3  WHERE D1.CD=(SELECT CD
-  4  FROM AREA
-  5  WHERE CAR=P1.CAR)
-  6  ORDER BY D,P;
-SELECT D AND COUNT(P)
-         *
-ERROR at line 1:
+SQL> SELECT A
+  2  FROM ASIGNATURA WHERE CT IN (SELECT MAX(DISTINCT CT)
+  3  FROM ASIGNATURA));
+FROM ASIGNATURA))
+                *
+ERROR at line 3:
+ORA-00933: SQL command not properly ended 
+
+
+SQL> SELECT A
+  2  FROM ASIGNATURA WHERE CT IN (SELECT MAX(DISTINCT CT)
+  3  FROM ASIGNATURA);
+
+A                                                                               
+--------------------------------------------------                              
+ENSENANZA DE LA MATEMATICA                                                      
+
+SQL> SELECT A
+  2  FROM ASIGNATURA WHERE CT IN (SELECT MIN (DISTINCT CT)
+  3  FROM ASIGNATURA);
+
+A                                                                               
+--------------------------------------------------                              
+INTELIGENCIA ARTIFICIAL                                                         
+ALMACENES DE DATOS                                                              
+MINERIA DE DATOS                                                                
+
+SQL> SELECT A, CT+CP+CL
+  2  FROM ASIGNATURA;
+
+A                                                    CT+CP+CL                   
+-------------------------------------------------- ----------                   
+BASES DE DATOS                                              6                   
+INTELIGENCIA ARTIFICIAL                                     6                   
+ALMACENES DE DATOS                                          3                   
+MINERIA DE DATOS                                            3                   
+INFORMATICA BASICA                                          6                   
+ALGEBRA                                                     6                   
+CALCULO                                                     6                   
+OPTIMIZACION                                                6                   
+GESTION DE RIESGOS                                          6                   
+ASTRONOMIA                                                  6                   
+ENSENANZA DE LA MATEMATICA                                  6                   
+
+A                                                    CT+CP+CL                   
+-------------------------------------------------- ----------                   
+ANALISIS COMPLEJO                                         7.5                   
+
+12 rows selected.
+
+SQL> SELECT A
+  2  FROM ASIGNATURA
+  3  WHERE CP+CL+CT IN (SELECT MAX(CP+CL+CT)
+  4  FROM ASIGNATURA);
+
+A                                                                               
+--------------------------------------------------                              
+ANALISIS COMPLEJO                                                               
+
+SQL> SELECT A
+  2  FROM ASIGNATURA);
+FROM ASIGNATURA)
+               *
+ERROR at line 2:
+ORA-00933: SQL command not properly ended 
+
+
+SQL> SELECT A
+  2  FROM ASIGNATURA
+  3  WHERE CP+CL+CT IN (SELECT MAX(CP+CL+CT)
+  4  ;
+
+*
+ERROR at line 4:
 ORA-00923: FROM keyword not found where expected 
 
 
-SQL> SELECT COUNT(D,P)
-  2  FROM DEPARTAMENTO D1, PROFESOR P1
-  3  WHERE D1.CD=(SELECT CD
-  4  FROM AREA
-  5  WHERE CAR=P1.CAR)
-  6  ORDER BY D,P;
-SELECT COUNT(D,P)
-       *
-ERROR at line 1:
-ORA-00909: invalid number of arguments 
-
-
-SQL> SELECT COUNT (P)
-  2  FROM PROFESOR P1
-  3  WHERE P1.CAR=(SELECT CD
-  4  ;
-WHERE P1.CAR=(SELECT CD
+SQL> SELECT A
+  2  FROM ASIGNATURA
+  3  WHERE CP+CL+CT IN (SELECT MIN(CP+CL+CT)
+  4  FROM ASIGNATURA;
+FROM ASIGNATURA
               *
+ERROR at line 4:
+ORA-00907: missing right parenthesis 
+
+
+SQL> SELECT A
+  2  FROM ASIGNATURA
+  3  WHERE CP+CL+CT IN (SELECT MIN(CP+CL+CT)
+  4  FROM ASIGNATURA);
+
+A                                                                               
+--------------------------------------------------                              
+ALMACENES DE DATOS                                                              
+MINERIA DE DATOS                                                                
+
+SQL> SELECT AR
+  2  FROM AREA
+  3  WHERE CAR IN (SELECT CAR
+  4  FROM ASIGNATURA
+  5  WHERE CT+CP+CL IN (SELECT MAX(DISTINCT CT+CP+CL)
+  6  FROM ASIGNATURA));
+
+AR                                                                              
+------------------------------------------------------------                    
+ANALISIS MATEMATICO                                                             
+
+SQL> SELECT COUNT (A)
+  2  FROM ASIGNATURA
+  3  WHERE CAR IN (SELECT CAR
+  4  FROM PROFESOR
+  5  WHERE DNI=1111);
+
+  COUNT(A)                                                                      
+----------                                                                      
+         1                                                                      
+
+SQL> SELECT CT+CL+CP
+  2  FROM ASIGNATURA
+  3  WHERE CAR IN (SELECT CAR
+  4  FROM PROFESOR
+  5  WHERE DNI=1111);
+
+  CT+CL+CP                                                                      
+----------                                                                      
+         6                                                                      
+
+SQL> SELECT P
+  2  FROM PROFESOR
+  3  WHERE CAR IN (SELECT CAR
+  4  FROM ASIGNATURA
+  5  WHERE CT+CP+CL IN (SELECT MAX( DISTINCT CT+CP+CL)
+  6  FROM ASIGNATURA));
+
+P                                                                               
+------------------------------------------------------------                    
+MARIO                                                                           
+
+SQL> SELECT AVG (DISTINCT A)
+  2  FROM ASIGNATURA
+  3  WHERE CAR ;
+WHERE CAR 
+         *
 ERROR at line 3:
-ORA-00921: unexpected end of SQL command 
+ORA-00920: invalid relational operator 
 
 
-SQL> SELECT D,COUNT(P)
-  2  FROM DEPARTAMENTO D1, PROFESOR P1
-  3  WHERE D1.CD=(SELECT CD
-  4  FROM AREA
-  5  WHERE CAR=P1.CAR)
-  6  ORDER BY D;
-SELECT D,COUNT(P)
+SQL> SELECT AR, AVG(A)
+  2  FROM AREA A1, ASIGNATURA A2
+  3  ;
+SELECT AR, AVG(A)
        *
 ERROR at line 1:
 ORA-00937: not a single-group group function 
 
 
-SQL> SELECT D,COUNT(P)
-  2  FROM DEPARTAMENTO D1, PROFESOR P1
-  3  WHERE D1.CD=(SELECT CD
-  4  FROM AREA
-  5  WHERE CAR=P1.CAR)
-  6  GROUP BY D
-  7  ORDER BY D;
-
-D                                                              COUNT(P)         
------------------------------------------------------------- ----------         
-ANALISIS MATEMATICO                                                   4         
-ASTROFISICA                                                           1         
-ESTADISTICA, INVESTIGACION OPERATIVA Y COMPUTACION                    8         
-MATEMATICA FUNDAMENTAL                                                1         
-
-SQL> SELECT COUNT(T)
-  2  FROM ASIGNATURA
-  3  WHERE CAR IN (SELECT CAR
-  4  FROM AREA
-  5  WHERE CD IN (SELECT CD
-  6  FROM DEPARTAMENTO
-  7  WHERE D='ESTADISTICA, INVESTIGACION OPERATIVA Y COMPUTACION'));
-
-  COUNT(T)                                                                      
-----------                                                                      
-         7                                                                      
-
-SQL> SELECT COUNT(P)
-  2  FROM PROFESOR
-  3  WHERE CAR IN (SELECT CAR
-  4  FROM AREA
-  5  WHERE AR='A%');
-
-  COUNT(P)                                                                      
-----------                                                                      
-         0                                                                      
-
-SQL> SELECT COUNT(P)
-  2  FROM PROFESOR
-  3  WHERE CAR IN (SELECT CAR
-  4  FROM AREA
-  5  WHERE AR LIKE 'A%');
-
-  COUNT(P)                                                                      
-----------                                                                      
-         3                                                                      
-
-SQL> SELECT T, COUNT(A)
-  2  FROM ASIGNATURA
-  3  WHERE ;
-WHERE 
-     *
-ERROR at line 3:
-ORA-00936: missing expression 
-
-
-SQL> SELECT, COUNT(A)
-  2  FROM ASIGNATURA A1, ASIGNATURA A2
-  3  WHERE(;
-SELECT, COUNT(A)
-      *
-ERROR at line 1:
-ORA-00936: missing expression 
-
-
-SQL> SELECT T,COUNT(A)
-  2  FROM ASIGNATURA A1, ASIGNATURA A2
-  3  WHERE A1.T=(SELECT T
-  4  FROM ASIGNATURA
-  5  WHERE A=A2.A)
-  6  GROUP BY T
-  7  ORDER BY T;
-GROUP BY T
-         *
-ERROR at line 6:
-ORA-00918: column ambiguously defined 
-
-
-SQL> SELECT T,COUNT(A)
-  2  FROM ASIGNATURA A1, ASIGNATURA A2
-  3  WHERE A1.T=(SELECT T
-  4  FROM ASIGNATURA
-  5  WHERE A=A2.A)
-  6  GROUP BY A1.T
-  7  ORDER BY T;
-SELECT T,COUNT(A)
-               *
-ERROR at line 1:
-ORA-00918: column ambiguously defined 
-
-
-SQL> exit
+SQL> EXIT
